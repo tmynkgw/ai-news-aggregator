@@ -17,13 +17,17 @@ export interface RawArticle {
 }
 
 export interface SummarizedArticle extends RawArticle {
-  summary: string;
+  bulletPoints: string[];
+  outlook: string;
+  diagram?: string;
   importance: Importance;
   keywords: string[];
 }
 
 export interface GeminiOutput {
-  summary: string;
+  bulletPoints: string[];
+  outlook: string;
+  diagram?: string;
   importance: Importance;
   keywords: string[];
 }

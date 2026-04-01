@@ -37,11 +37,53 @@ export async function saveToNotion(article: SummarizedArticle): Promise<void> {
     children: [
       {
         object: "block",
-        type: "paragraph",
-        paragraph: {
-          rich_text: [{ type: "text", text: { content: article.summary } }],
+        type: "heading_2",
+        heading_2: {
+          rich_text: [{ type: "text", text: { content: "要約" } }],
         },
       },
+      ...article.bulletPoints.map((point) => ({
+        object: "block" as const,
+        type: "bulleted_list_item" as const,
+        bulleted_list_item: {
+          rich_text: [{ type: "text" as const, text: { content: point } }],
+        },
+      })),
+      {
+        object: "block",
+        type: "heading_2",
+        heading_2: {
+          rich_text: [{ type: "text", text: { content: "今後の展望・予想" } }],
+        },
+      },
+      {
+        object: "block",
+        type: "paragraph",
+        paragraph: {
+          rich_text: [{ type: "text", text: { content: article.outlook } }],
+        },
+      },
+      ...(article.diagram
+        ? [
+            {
+              object: "block" as const,
+              type: "heading_2" as const,
+              heading_2: {
+                rich_text: [{ type: "text" as const, text: { content: "構成図" } }],
+              },
+            },
+            {
+              object: "block" as const,
+              type: "code" as const,
+              code: {
+                language: "mermaid" as const,
+                rich_text: [
+                  { type: "text" as const, text: { content: article.diagram } },
+                ],
+              },
+            },
+          ]
+        : []),
     ],
   });
 }
