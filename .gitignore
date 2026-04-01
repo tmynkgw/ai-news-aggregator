@@ -1,0 +1,17 @@
+# 環境変数
+.env
+.env.local
+
+# ビルド成果物
+dist/
+
+# 依存関係
+node_modules/
+
+# ログ
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:ai.meta.com)",
+      "WebFetch(domain:engineering.fb.com)"
+    ]
+  }
+}

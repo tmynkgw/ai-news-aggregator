@@ -16,16 +16,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-> **Note:** プロジェクト初期段階のため、package.json が追加されたらここにビルド・テスト・リントのコマンドを記載すること。
-
-想定コマンド（package.json 追加後に確認・更新すること）:
 ```bash
 npm install          # 依存関係インストール
-npm run build        # TypeScript コンパイル
-npm run start        # メインパイプライン実行
-npm test             # テスト実行
-npm run lint         # リント
+npm run build        # TypeScript コンパイル (dist/ に出力)
+npm start            # ビルド済みパイプライン実行 (node dist/index.js)
+npm run start:ts     # ts-node で直接実行（ビルド不要）
+npm run dev          # nodemon でホットリロード開発
+npm test             # Jest テスト実行
 ```
+
+実行前に `.env` ファイルが必要（`.env.example` を参照）。
 
 ## Architecture
 
