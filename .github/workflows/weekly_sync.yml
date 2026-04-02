@@ -36,6 +36,6 @@ jobs:
           FEED_URL_MICROSOFT: ${{ secrets.FEED_URL_MICROSOFT }}
           FEED_URL_META: ${{ secrets.FEED_URL_META }}
           FEED_URL_ANTHROPIC: ${{ secrets.FEED_URL_ANTHROPIC }}
-          HOURS_LOOKBACK: ${{ secrets.HOURS_LOOKBACK }}
-          MAX_ARTICLES: ${{ secrets.MAX_ARTICLES }}
+          HOURS_LOOKBACK: ${{ vars.HOURS_LOOKBACK || '168' }}
+          MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '30' }}
 
