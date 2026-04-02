@@ -1,9 +1,9 @@
-name: Daily AI News Sync
+name: Weekly AI News Sync
 
 on:
   schedule:
-    # 毎日 JST 09:00 (UTC 00:00) に実行
-    - cron: "0 0 * * *"
+    # 毎週月曜日 JST 09:00 (UTC 00:00) に実行
+    - cron: "0 0 * * 1"
   workflow_dispatch: # 手動実行も可能
 
 jobs:
@@ -29,4 +29,11 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          NOTION_PARENT_PAGE_ID: ${{ secrets.NOTION_PARENT_PAGE_ID }}
+          ENABLED_VENDORS: ${{ secrets.ENABLED_VENDORS }}
+          FEED_URL_OPENAI: ${{ secrets.FEED_URL_OPENAI }}
+          FEED_URL_GOOGLE: ${{ secrets.FEED_URL_GOOGLE }}
+          FEED_URL_MICROSOFT: ${{ secrets.FEED_URL_MICROSOFT }}
+          FEED_URL_META: ${{ secrets.FEED_URL_META }}
+          FEED_URL_ANTHROPIC: ${{ secrets.FEED_URL_ANTHROPIC }}
+          HOURS_LOOKBACK: 168

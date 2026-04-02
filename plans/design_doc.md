@@ -28,15 +28,15 @@
 | Title (タイトル) | `title` | 記事のタイトル |
 | Date (日付) | `date` | 記事の公開日（または取得日） |
 | Vendor (ベンダー) | `select` | OpenAI, Google, Anthropic, Microsoft など |
-| Importance (重要度) | `select` | High, Medium, Low (Geminiが判定) |
 | URL (元URL) | `url` | ニュース元記事のリンク |
-| Keywords (キーワード) | `multi_select` または `rich_text` | `#LLM #API #Gemini` などのハッシュタグ |
+| Keywords (キーワード) | `multi_select` | Development, Architecture, Security, Business/Cost, Research, Product から選択 |
 | ページ本文 | `page content` | Geminiが生成した詳細な要約（Markdown形式） |
 
 ## 5. 期待するGeminiのプロンプト設計（方針）
 - 役割: あなたはシニアソフトウェアエンジニアです。
 - タスク: 提供されたITニュース記事を読み、他のエンジニアにとって有益な情報を抽出してください。
-- 出力フォーマット（JSON Schemaを活用）: `summary`, `importance`, `keywords` の3点。
+- 出力フォーマット（JSON Schemaを活用）: `bulletPoints`, `outlook`, `diagram`, `keywords` の4点。
+- キーワードは固定リスト（Development, Architecture, Security, Business/Cost, Research, Product）から選択。
 
 ## 6. ディレクトリ構成（想定）
 ```text

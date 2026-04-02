@@ -1,5 +1,3 @@
-export type Importance = "High" | "Medium" | "Low";
-
 export type Vendor =
   | "OpenAI"
   | "Anthropic"
@@ -7,6 +5,14 @@ export type Vendor =
   | "Microsoft"
   | "Meta"
   | "Other";
+
+export type Keyword =
+  | "Development"
+  | "Architecture"
+  | "Security"
+  | "Business/Cost"
+  | "Research"
+  | "Product";
 
 export interface RawArticle {
   title: string;
@@ -17,17 +23,17 @@ export interface RawArticle {
 }
 
 export interface SummarizedArticle extends RawArticle {
+  translatedTitle: string;
   bulletPoints: string[];
-  outlook: string;
+  userImpact: string[];
   diagram?: string;
-  importance: Importance;
-  keywords: string[];
+  keywords: Keyword[];
 }
 
 export interface GeminiOutput {
+  translatedTitle: string;
   bulletPoints: string[];
-  outlook: string;
+  userImpact: string[];
   diagram?: string;
-  importance: Importance;
-  keywords: string[];
+  keywords: Keyword[];
 }

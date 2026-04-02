@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { fetchRecentArticles } from "./fetcher";
 import { summarizeArticles } from "./ai";
-import { saveArticles } from "./mcp";
+import { createDatabase, saveArticles } from "./mcp";
 
 async function main(): Promise<void> {
   console.log("=== AI News Aggregator 開始 ===");
@@ -21,9 +21,13 @@ async function main(): Promise<void> {
   const summarized = await summarizeArticles(rawArticles);
   console.log(`→ ${summarized.length} 件の要約完了`);
 
-  // Step 3: Notionに保存
-  console.log("\n[Step 3] Notionデータベースに保存中...");
-  await saveArticles(summarized);
+  // Step 3: Notionデータベースを新規作成
+  console.log("\n[Step 3] Notionデータベースを新規作成中...");
+  const databaseId = await createDatabase();
+
+  // Step 4: 作成したDBに記事を保存
+  console.log("\n[Step 4] Notionデータベースに保存中...");
+  await saveArticles(summarized, databaseId);
   console.log(`→ ${summarized.length} 件を保存完了`);
 
   console.log("\n=== 完了 ===");
