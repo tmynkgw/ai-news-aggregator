@@ -1,22 +1,22 @@
 # AI News Aggregator & Summarizer 構築設計書
 
 ## 1. プロジェクト概要
-主要ITベンダー（OpenAI, Anthropic, Google等）の最新AI関連ニュースを日次で自動収集し、Gemini APIを用いて技術者向けに要約。その結果をNotionデータベースに蓄積する自動化パイプライン。
+主要ITベンダー（OpenAI, Anthropic, Google等）の最新AI関連ニュースを週次で自動収集し、Gemini APIを用いて技術者向けに要約。その結果をNotionデータベースに蓄積する自動化パイプライン。
 また、本プロジェクトは次世代AIアーキテクチャである「MCP (Model Context Protocol)」の学習も兼ねており、Notionへの書き込みなどのコンポーネントをMCPサーバーとして切り出す（またはその概念を取り入れた）設計とする。
 
 ## 2. 技術スタック
 - **言語:** TypeScript (Node.js環境)
-- **実行環境:** GitHub Actions (Cronによる日次バッチ実行)
+- **実行環境:** GitHub Actions (Cronによる週次バッチ実行)
 - **AI/LLM:** Gemini API (要約・重要度判定・タグ抽出用)
 - **データストア:** Notion API
 - **コーディング支援:** Claude Code (自律型AIエージェント)
 - **アーキテクチャ:** 一部機能をMCPサーバー/クライアントモデルとして実装
 
 ## 3. システムアーキテクチャと処理フロー
-本システムは、GitHub Actions上で以下のフローを日次で実行する。
+本システムは、GitHub Actions上で以下のフローを週次（毎週月曜 JST 9:00）で実行する。
 
 1. **Information Fetcher (情報収集)**
-   - 各ベンダーの公式ブログRSSや指定URLから、最新記事（24時間以内）を取得する。
+   - 各ベンダーの公式ブログRSSや指定URLから、最新記事（デフォルト: 168時間以内）を取得する。
 2. **AI Summarizer (要約とメタデータ抽出)**
    - 取得した記事テキストをGemini APIに送信し、プロンプトにて「技術者向けの要約（Markdown）」「重要度」「検索用キーワード（#ハッシュタグ形式）」を出力させる。
 3. **Notion MCP Client/Server (データ蓄積)**
@@ -35,15 +35,20 @@
 ## 5. 期待するGeminiのプロンプト設計（方針）
 - 役割: あなたはシニアソフトウェアエンジニアです。
 - タスク: 提供されたITニュース記事を読み、他のエンジニアにとって有益な情報を抽出してください。
-- 出力フォーマット（JSON Schemaを活用）: `bulletPoints`, `outlook`, `diagram`, `keywords` の4点。
-- キーワードは固定リスト（Development, Architecture, Security, Business/Cost, Research, Product）から選択。
+- 出力フォーマット（JSON Schemaを活用）: `translatedTitle`, `bulletPoints`, `userImpact`, `diagram`, `keywords` の5点。
+  - `translatedTitle`: 英語タイトルの日本語訳
+  - `bulletPoints`: 具体的な製品名・技術名・数値を含む要点（3〜6項目）。メタな表現禁止。
+  - `userImpact`: 開発者・企業が「何が使えるようになるか」「何を変更すべきか」を具体的に記述（2〜3項目）。ポエム・抽象的展望禁止。
+  - `diagram`: Mermaid記法の構成図（不要なら空文字）
+  - `keywords`: 固定リスト（Development, Architecture, Security, Business/Cost, Research, Product）から選択
+- キーワードは固定リスト（Development, Architecture, Security, Business/Cost, Research, Product）から選択（複数可）。
 
 ## 6. ディレクトリ構成（想定）
 ```text
 .
 ├── .github/
 │   └── workflows/
-│       └── daily_sync.yml     # GitHub Actions設定
+│       └── weekly_sync.yml    # GitHub Actions設定（毎週月曜 JST 9:00）
 ├── plans/
 │   └── design_doc.md          # プロジェクト全体設計書（本ファイル）
 ├── src/
